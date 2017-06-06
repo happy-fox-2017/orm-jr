@@ -1,0 +1,15 @@
+Student.create(dbModel.connection, new Student('ade','anugerah',1))
+
+Student.update(dbModel.connection, new Student('ade','blablabla',1,1))
+
+Student.delete(dbModel.connection, 1)
+
+Student.findByID(dbModel.connection, 1)
+
+Student.findAll(dbModel.connection, function(err,data){if(!err){for(var i=0; i<data.length; i++){console.log(data[i]);}}else{console.log(err)};})
+
+Student.where(dbModel.connection, "firstname = 'ade' ", function(err,data){if(!err){for(var i=0; i<data.length; i++){console.log(data[i]);}}else{console.log('Error')};})
+
+Student.findAll(dbModel.connection, {limit:1, offset:1},function(err,data){if(!err){for(var i=0; i<data.length; i++){console.log(data[i]);}}else{console.log(err)};})
+
+Student.findOrCreate(dbModel.connection, new Student('ade','anugerah',1))
