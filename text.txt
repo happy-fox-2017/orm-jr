@@ -1,0 +1,77 @@
+----Student Table----
+//create
+Student.create(dbModel.connection, new Student({first_name:"Novi",last_name:"Talim", id_cohort : 1}));
+
+//delete
+Student.delete(dbModel.connection, 1)
+
+//update
+Student.update(dbModel.connection, new Student({first_name:'Antoni', last_name:'Angga', id_cohort:1, id:2}));
+
+//Find all
+Student.findAll(dbModel.connection, function(err, data){
+if(!err){
+  for(var i=0; i<data.length; i++){
+  console.log(data[i]);
+  }
+}
+else {
+  console.log(err);
+}
+});
+
+//Find by where
+Student.where(dbModel.connection, {first_name: 'Antoni'}, function(err, data){
+  if(!err){
+    for(var i=0; i<data.length; i++){
+      console.log(data[i]);
+    }
+  }
+  else {
+    console.log(err);
+  }
+});
+
+//Find by ID
+Student.findById(dbModel.connection, 2)
+
+//Find or create
+Student.findOrCreate(dbModel.connection, new Student({first_name : "Novi", last_name : "Talim", id_cohort : 1}));
+
+
+----Cohort Table----
+//create
+Cohort.create(dbModel.connection, new Cohort({name:"happy-fox"}));
+
+//delete
+Cohort.delete(dbModel.connection, 2)
+
+//update
+Cohort.update(dbModel.connection, new Cohort({name:"fire-fox",id:2}))
+
+//Find all
+Cohort.findAll(dbModel.connection, function(err, data){
+if(!err){
+  for(var i=0; i<data.length; i++){
+  console.log(data[i]);
+  }
+}
+else {
+  console.log(err);
+}
+});
+
+//find by id
+Cohort.findById(dbModel.connection, 1);
+
+//find by where
+Cohort.where(dbModel.connection, {name: 'gray-fox'}, function(err, data){
+  if(!err){
+    for(var i=0; i<data.length; i++){
+      console.log(data[i]);
+    }
+  }
+  else {
+    console.log(err);
+  }
+});
