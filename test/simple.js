@@ -1,4 +1,22 @@
-import DBModel from "../models/db_model.js";
-import Student from "../models/student.js";
+import assert from 'assert';
 
-var db = new DBModel("./db/test.db")
+import DBModel from '../models/db_model';
+import Student from '../models/student';
+
+const db = new DBModel("./db/test.db")
+
+/**
+ * contoh testing function dengan promise
+ * comment apabila tidak digunakan
+ */
+describe('DBModel Create All Table', function() {
+  it('should create all table', function(done) {
+    db.createAllTable()
+    .then(() => {
+      done();
+    })
+    .catch((err) => {
+      done(err);
+    });
+  });
+});
