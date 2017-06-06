@@ -9,7 +9,7 @@ class Cohort {
   }
   
   static create(db,cohort){
-    let add = `INSERT INTO cohort(name) VALUES('${cohort.name}')`;
+    let add = `INSERT INTO cohorts(name) VALUES('${cohort.name}')`;
     db.run(add,(err)=>{
       if (err) {
         console.log(err);
@@ -20,7 +20,7 @@ class Cohort {
   }
   
   static update(db,cohort){
-    let update = `UPDATE cohort SET name = '${cohort.name}'
+    let update = `UPDATE cohorts SET name = '${cohort.name}'
                   WHERE id = '${cohort.id}'`;
     db.run(update,(err) => {
       if (err) {

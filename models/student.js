@@ -10,7 +10,7 @@ class Student {
     this.id = id;
   }
   
-  static create(db,student){
+  static create(db,students){
     let create = `INSERT INTO students(firstname,lastname,cohort_id) VALUES('${students.firstname}','${students.lastname}','${students.cohort_id}')`;
     db.run(create,(err)=>{
       if (err) {
