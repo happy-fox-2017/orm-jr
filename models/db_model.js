@@ -20,6 +20,8 @@ const CREATE_COHORT_TABLE_DDL = `
       name TEXT NOT NULL UNIQUE
     )`;
 
+const CLEAR_STUDENT_TABLE_SQL = 'DELETE FROM students';
+
 class DBModel {
 
   constructor(dbFileName) {
@@ -50,7 +52,19 @@ class DBModel {
     });
   }
 
-  createAllTable() {
+  clearStudentsTable() {
+    return new Promise((resolve, reject) => {
+      this.db.run(CLEAR_STUDENT_TABLE_SQL, (err) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+    });
+  }
+
+  setup() {
     return new Promise((resolve, reject) => {
       this.createCohortsTable()
       .then((result) => {
@@ -65,6 +79,10 @@ class DBModel {
         reject(err);
       });
     });
+  }
+
+  get connection() {
+    return this.db;
   }
 }
 
