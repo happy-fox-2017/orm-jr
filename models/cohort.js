@@ -12,7 +12,7 @@ class Cohort {
       let query = `INSERT INTO cohorts (name) VALUES ('${cohorts.name}')`
       db.run(query, (err) => {
         if (!err) console.log('Inserted')
-        else console.log(err)
+        else return err
       })
     })
   }
@@ -22,7 +22,7 @@ class Cohort {
       let query = 'SELECT * FROM cohorts';
       db.all(query, (err, rows) => {
         if (!err) console.log(rows);
-        else return console.log(err);
+        else return err;
       });
     });
   }
@@ -32,7 +32,7 @@ class Cohort {
       let query = `UPDATE cohorts SET name = '${cohorts.name}' WHERE id = ${id}`;
       db.run(query, (err) => {
         if(!err) console.log('updated')
-        else console.log(err)
+        else return err
       })
     })
   }
@@ -50,7 +50,7 @@ class Cohort {
     db.serialize(function() {
       let query = `SELECT * FROM cohorts WHERE id = ${id}`;
       db.all(query, (err, rows) => {
-        if (err) console.log(err);
+        if (err) return err;
         else {
           console.log(rows);
         }
@@ -62,7 +62,7 @@ class Cohort {
     db.serialize(function() {
       let query = `SELECT * FROM cohorts WHERE ${attribute}`;
       db.run(query, (err, rows) => {
-        if (err) console.log(err);
+        if (err) return err;
         else {
           console.log(rows);
         }

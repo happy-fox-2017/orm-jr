@@ -1,8 +1,11 @@
 "use strict"
 const repl = require('repl');
+// const sqlite = require('sqlite3').verbose();
 const DBModel = require('./models/db_model.js');
 const Student = require('./models/student.js');
 const Cohort = require('./models/cohort.js');
+// let file = './db/student.db';
+// let db = new sqlite.Database(file);
 
 let replServer = repl.start({
   prompt: '>> ',
