@@ -1,1 +1,1 @@
-# orm-jr
+# orm-student-schema
