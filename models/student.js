@@ -52,6 +52,10 @@ class Student {
     db.close()
   }
 
+  static findOrCreate(db,student) {
+
+  }
+
   static where(db, whereStatement) {
     let query = `select * from students where ${whereStatement}`
     db.all(query, (err, rows) => {
