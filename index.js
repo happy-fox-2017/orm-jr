@@ -18,3 +18,5 @@ let dbModel = new DBModel()
 
 
 replServer.context.dbModel = dbModel
+replServer.context.Student = Student
+replServer.context.Cohort = Cohort
