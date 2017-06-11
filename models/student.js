@@ -1,24 +1,32 @@
-"use strict"
+'use strict'
 
-const CREATE_STUDENT_SQL = 'INSERT INTO students VALUES (?, ?, ?, ?, ?)';
-const UPDATE_STUDENT_SQL = 'UPDATE students SET first_name = ?, last_name = ? WHERE id = ?';
+const CREATE_STUDENT_SQL = 'INSERT INTO students VALUES (?, ?, ?, ?)';
+const UPDATE_STUDENT_SQL = 'UPDATE students SET first_name = ?, last_name = ?, cohort_id = ? WHERE id = ?';
 const DELETE_STUDENT_SQL = 'DELETE FROM students WHERE id = ?';
 const SELECT_STUDENT_BY_ID_SQL = 'SELECT * FROM students where id = ?';
 const FIND_ALL_STUDENT_SQL = 'SELECT * FROM students';
 
 class Student {
-  constructor(id, firstName, lastName, age) {
+  constructor(id, firstName, lastName) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
-    this.age = age;
-    this.cohort = null;
+    this._cohort = null;
+  }
+
+  set cohort(cohort) {
+    this._cohort = cohort;
+  }
+
+  get cohort() {
+    return this._cohort;
   }
 
   static create(dbConnection, student) {
     return new Promise((resolve, reject) => {
+      const cohortId = student.cohort ? student.cohort.id : null;
       dbConnection.run(CREATE_STUDENT_SQL,
-      [student.id, student.firstName, student.lastName, student.age, student.cohort], (err) => {
+      [student.id, student.firstName, student.lastName, cohortId], (err) => {
         if (!err) {
           resolve();
         } else {
@@ -30,8 +38,9 @@ class Student {
 
   static update(dbConnection, student) {
     return new Promise((resolve, reject) => {
+      const cohortId = student.cohort ? student.cohort.id : null;
       dbConnection.run(UPDATE_STUDENT_SQL,
-      [student.firstName, student.lastName, student.id], function afterUpdate(err) {
+      [student.firstName, student.lastName, cohortId, student.id], function afterUpdate(err) {
         if (!err) {
           resolve({ changes: this.changes, err: null });
         } else {

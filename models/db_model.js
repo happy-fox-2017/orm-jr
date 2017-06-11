@@ -8,7 +8,6 @@ const CREATE_STUDENT_TABLE_DDL = `
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       first_name TEXT NOT NULL UNIQUE,
       last_name TEXT,
-      age INTEGER,
       cohort_id INTEGER,
       FOREIGN KEY (cohort_id) REFERENCES cohorts(id)
     )`;
