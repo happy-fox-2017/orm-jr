@@ -20,6 +20,7 @@ const CREATE_COHORT_TABLE_DDL = `
     )`;
 
 const CLEAR_STUDENT_TABLE_SQL = 'DELETE FROM students';
+const CLEAR_COHORT_TABLE_SQL = 'DELETE FROM cohorts';
 
 class DBModel {
 
@@ -54,6 +55,18 @@ class DBModel {
   clearStudentsTable() {
     return new Promise((resolve, reject) => {
       this.db.run(CLEAR_STUDENT_TABLE_SQL, (err) => {
+        if (!err) {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
+    });
+  }
+
+  clearCohortsTable() {
+    return new Promise((resolve, reject) => {
+      this.db.run(CLEAR_COHORT_TABLE_SQL, (err) => {
         if (!err) {
           resolve();
         } else {

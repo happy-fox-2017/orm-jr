@@ -1,10 +1,12 @@
 'use strict'
 
+import Cohort from './cohort';
+
 const CREATE_STUDENT_SQL = 'INSERT INTO students VALUES (?, ?, ?, ?)';
 const UPDATE_STUDENT_SQL = 'UPDATE students SET first_name = ?, last_name = ?, cohort_id = ? WHERE id = ?';
 const DELETE_STUDENT_SQL = 'DELETE FROM students WHERE id = ?';
-const SELECT_STUDENT_BY_ID_SQL = 'SELECT * FROM students where id = ?';
-const FIND_ALL_STUDENT_SQL = 'SELECT * FROM students';
+const SELECT_STUDENT_BY_ID_SQL = 'SELECT s.*, c.id AS cohort_id, c.name AS cohort_name FROM students s LEFT JOIN cohorts c ON c.id = s.cohort_id where s.id = ?';
+const FIND_ALL_STUDENT_SQL = 'SELECT s.*, c.id AS cohort_id, c.name AS cohort_name FROM students s LEFT JOIN cohorts c ON c.id = s.cohort_id';
 
 class Student {
   constructor(id, firstName, lastName) {
@@ -69,7 +71,12 @@ class Student {
       [id], (err, rows) => {
         if (!err) {
           if (rows.length === 1) {
-            resolve(rows[0]);
+            const student = new Student(rows[0].id, rows[0].first_name, rows[0].last_name);
+            if (rows[0].cohort_id) {
+              const cohort = new Cohort(rows[0].cohort_id, rows[0].cohort_name);
+              student.cohort = cohort;
+            }
+            resolve(student);
           } else if (rows.length > 1) {
             reject(new Error('Student id not unique'));
           } else {
@@ -91,7 +98,15 @@ class Student {
       dbConnection.all(findAllQuery,
       (err, rows) => {
         if (!err) {
-          resolve(rows);
+          const students = rows.map((row) => {
+            const student = new Student(row.id, row.first_name, row.last_name);
+            if (row.cohort_id) {
+              const cohort = new Cohort(row.cohort_id, row.cohort_name);
+              student.cohort = cohort;
+            }
+            return student;
+          });
+          resolve(students);
         } else {
           reject(err);
         }
