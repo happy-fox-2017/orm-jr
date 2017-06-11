@@ -1,7 +1,10 @@
 "use strict"
 
 const CREATE_STUDENT_SQL = 'INSERT INTO students VALUES (?, ?, ?, ?, ?)';
+const UPDATE_STUDENT_SQL = 'UPDATE students SET first_name = ?, last_name = ? WHERE id = ?';
+const DELETE_STUDENT_SQL = 'DELETE FROM students WHERE id = ?';
 const SELECT_STUDENT_BY_ID_SQL = 'SELECT * FROM students where id = ?';
+const FIND_ALL_STUDENT_SQL = 'SELECT * FROM students';
 
 class Student {
   constructor(id, firstName, lastName, age) {
@@ -25,6 +28,32 @@ class Student {
     });
   }
 
+  static update(dbConnection, student) {
+    return new Promise((resolve, reject) => {
+      dbConnection.run(UPDATE_STUDENT_SQL,
+      [student.firstName, student.lastName, student.id], function afterUpdate(err) {
+        if (!err) {
+          resolve({ changes: this.changes, err: null });
+        } else {
+          reject({ changes: null, err });
+        }
+      });
+    });
+  }
+
+  static delete(dbConnection, id) {
+    return new Promise((resolve, reject) => {
+      dbConnection.run(DELETE_STUDENT_SQL,
+      [id], function afterDelete(err) {
+        if (!err) {
+          resolve({ changes: this.changes, err: null });
+        } else {
+          reject({ changes: null, err });
+        }
+      });
+    });
+  }
+
   static findById(dbConnection, id) {
     return new Promise((resolve, reject) => {
       dbConnection.all(SELECT_STUDENT_BY_ID_SQL,
@@ -37,6 +66,32 @@ class Student {
           } else {
             reject(new Error('Student not found'));
           }
+        } else {
+          reject(err);
+        }
+      });
+    });
+  }
+
+  static findAll(dbConnection) {
+    return new Promise((resolve, reject) => {
+      dbConnection.all(FIND_ALL_STUDENT_SQL,
+      (err, rows) => {
+        if (!err) {
+          resolve(rows);
+        } else {
+          reject(err);
+        }
+      });
+    });
+  }
+
+  static where(dbConnection, filter) {
+    return new Promise((resolve, reject) => {
+      dbConnection.all(`${FIND_ALL_STUDENT_SQL} WHERE ${filter}`,
+      (err, rows) => {
+        if (!err) {
+          resolve(rows);
         } else {
           reject(err);
         }
