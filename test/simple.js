@@ -24,7 +24,7 @@ describe('DBModel Create All Table', function () {
 
 describe('Student', function () {
 
-  const student = new Student(1, 'Yusuf', 'Arifien', 20);
+  const student = new Student(1, 'Yusuf', 'Arifien');
 
   describe('#create()', function () {
     before(function (done) {
