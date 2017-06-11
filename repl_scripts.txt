@@ -1,0 +1,31 @@
+dbModel.setup()
+
+Student.create(dbModel.connection, new Student(1, 'Student 1 first name', 'Student 1 last name')).then(() => {console.log('Student created')});
+
+Student.findAll(dbModel.connection).then((students) => {console.log('Students:', students)});
+
+Cohort.create(dbModel.connection, new Cohort(1, 'Cohort 1')).then(() => {console.log('Cohort created')});
+
+Cohort.findAll(dbModel.connection).then((cohorts) => {console.log('Cohorts:', cohorts)});
+
+Cohort.findById(dbModel.connection, 1).then((cohort) => {
+  console.log('Cohort:', cohort)
+});
+
+Student.findById(dbModel.connection, 1).then((student) => {
+  console.log('Student:', student)
+  Cohort.findById(dbModel.connection, 1).then((cohort) => {
+    console.log('Cohort:', cohort)
+    student.cohort = cohort;
+
+    Student.update(dbModel.connection, student)
+    .then((result) => {
+      console.log('Cohort added to student');
+      console.log('Student with cohort', student);
+    })
+  });
+});
+
+Student.findById(dbModel.connection, 1).then((student) => {
+  console.log('Student:', student)
+});

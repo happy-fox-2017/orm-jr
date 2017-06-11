@@ -1,5 +1,5 @@
 import DBModel from '../models/db_model';
-import Student from '../models/student';
+import Cohort from '../models/cohort';
 import chai from 'chai';
 
 const should = chai.should();
@@ -22,17 +22,17 @@ describe('DBModel Create All Table', function () {
   });
 });
 
-describe('Student', function () {
+describe('Cohort', function () {
 
-  const student = new Student(1, 'Yusuf', 'Arifien');
+  const cohort = new Cohort(1, 'Happy Fox');
 
   describe('#create()', function () {
     before(function (done) {
-      db.clearStudentsTable().then(() => done());
+      db.clearCohortsTable().then(() => done());
     });
 
     it('should save without error', function (done) {
-      Student.create(db.connection, student)
+      Cohort.create(db.connection, cohort)
       .then(() => {
         done();
       })
@@ -44,8 +44,8 @@ describe('Student', function () {
 
   describe('#update()', function () {
     before(function (done) {
-      db.clearStudentsTable().then(() => {
-        Student.create(db.connection, student)
+      db.clearCohortsTable().then(() => {
+        Cohort.create(db.connection, cohort)
         .then(() => {
           done();
         });
@@ -53,7 +53,7 @@ describe('Student', function () {
     });
 
     it('should change only 1 row', function (done) {
-      Student.update(db.connection, new Student(1, 'aaa', 'bbb'))
+      Cohort.update(db.connection, new Cohort(1, 'ABC'))
       .then((result) => {
         result.should.equal(1);
         done();
@@ -66,8 +66,8 @@ describe('Student', function () {
 
   describe('#delete()', function () {
     before(function (done) {
-      db.clearStudentsTable().then(() => {
-        Student.create(db.connection, student)
+      db.clearCohortsTable().then(() => {
+        Cohort.create(db.connection, cohort)
         .then(() => {
           done();
         });
@@ -75,7 +75,7 @@ describe('Student', function () {
     });
 
     it('should delete only 1 row', function (done) {
-      Student.delete(db.connection, 1)
+      Cohort.delete(db.connection, 1)
       .then((result) => {
         result.should.equal(1);
         done();
@@ -88,16 +88,16 @@ describe('Student', function () {
 
   describe('#findById()', function () {
     before(function (done) {
-      db.clearStudentsTable()
-      .then(Student.create(db.connection, student))
+      db.clearCohortsTable()
+      .then(Cohort.create(db.connection, cohort))
       .then(() => done());
     });
 
-    it('should find a student by given id', function  (done) {
-      const studentId = 1;
-      Student.findById(db.connection, studentId)
-      .then((foundStudent) => {
-        foundStudent.id.should.equal(studentId);
+    it('should find a cohort by given id', function  (done) {
+      const cohortId = 1;
+      Cohort.findById(db.connection, cohortId)
+      .then((foundCohort) => {
+        foundCohort.id.should.equal(cohortId);
         done();
       })
       .catch((err) => {
@@ -108,15 +108,15 @@ describe('Student', function () {
 
   describe('#findAll()', function () {
     before(function (done) {
-      db.clearStudentsTable()
-      .then(Student.create(db.connection, student))
+      db.clearCohortsTable()
+      .then(Cohort.create(db.connection, cohort))
       .then(() => done());
     });
 
-    it('should find all students', function  (done) {
-      Student.findAll(db.connection)
-      .then((foundStudents) => {
-        foundStudents.should.have.lengthOf(1);
+    it('should find all cohorts', function  (done) {
+      Cohort.findAll(db.connection)
+      .then((foundCohorts) => {
+        foundCohorts.should.have.lengthOf(1);
         done();
       })
       .catch((err) => {
@@ -127,15 +127,15 @@ describe('Student', function () {
 
   describe('#where()', function () {
     before(function (done) {
-      db.clearStudentsTable()
-      .then(Student.create(db.connection, student))
+      db.clearCohortsTable()
+      .then(Cohort.create(db.connection, cohort))
       .then(() => done());
     });
 
-    it('should find all students with given filter', function  (done) {
-      Student.where(db.connection, 'first_name = \'Yusuf\'')
-      .then((foundStudents) => {
-        foundStudents.should.have.lengthOf(1);
+    it('should find all cohorts with given filter', function  (done) {
+      Cohort.where(db.connection, 'name = \'Happy Fox\'')
+      .then((foundCohorts) => {
+        foundCohorts.should.have.lengthOf(1);
         done();
       })
       .catch((err) => {
@@ -146,13 +146,13 @@ describe('Student', function () {
 
   describe('#findOrCreate()', function () {
     before(function (done) {
-      db.clearStudentsTable()
-      .then(Student.create(db.connection, new Student(1, 'aaa', 'bbb')))
+      db.clearCohortsTable()
+      .then(Cohort.create(db.connection, new Cohort(1, 'ABC')))
       .then(() => done());
     });
 
     it('should change 1 row', function (done) {
-      Student.findOrCreate(db.connection, student)
+      Cohort.findOrCreate(db.connection, cohort)
       .then((result) => {
         result.should.equal(1);
         done();
