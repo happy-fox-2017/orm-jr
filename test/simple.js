@@ -55,12 +55,8 @@ describe('Student', function () {
     it('should change only 1 row', function (done) {
       Student.update(db.connection, new Student(1, 'aaa', 'bbb'))
       .then((result) => {
-        if (!result.err) {
-          result.changes.should.equal(1);
-          done();
-        } else {
-          done(result.err);
-        }
+        result.should.equal(1);
+        done();
       })
       .catch((err) => {
         done(err);
@@ -81,12 +77,8 @@ describe('Student', function () {
     it('should delete only 1 row', function (done) {
       Student.delete(db.connection, 1)
       .then((result) => {
-        if (!result.err) {
-          result.changes.should.equal(1);
-          done();
-        } else {
-          done(result.err);
-        }
+        result.should.equal(1);
+        done();
       })
       .catch((err) => {
         done(err);
@@ -144,6 +136,25 @@ describe('Student', function () {
       Student.where(db.connection, 'first_name = \'Yusuf\'')
       .then((foundStudents) => {
         foundStudents.should.have.lengthOf(1);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+    });
+  });
+
+  describe('#findOrCreate()', function () {
+    before(function (done) {
+      db.clearStudentsTable()
+      .then(Student.create(db.connection, new Student(1, 'aaa', 'bbb')))
+      .then(() => done());
+    });
+
+    it('should change 1 row', function (done) {
+      Student.findOrCreate(db.connection, student)
+      .then((result) => {
+        result.should.equal(1);
         done();
       })
       .catch((err) => {

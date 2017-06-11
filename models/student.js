@@ -42,9 +42,9 @@ class Student {
       dbConnection.run(UPDATE_STUDENT_SQL,
       [student.firstName, student.lastName, cohortId, student.id], function afterUpdate(err) {
         if (!err) {
-          resolve({ changes: this.changes, err: null });
+          resolve(this.changes);
         } else {
-          reject({ changes: null, err });
+          reject(err);
         }
       });
     });
@@ -55,9 +55,9 @@ class Student {
       dbConnection.run(DELETE_STUDENT_SQL,
       [id], function afterDelete(err) {
         if (!err) {
-          resolve({ changes: this.changes, err: null });
+          resolve(this.changes);
         } else {
-          reject({ changes: null, err });
+          reject(err);
         }
       });
     });
@@ -82,9 +82,13 @@ class Student {
     });
   }
 
-  static findAll(dbConnection) {
+  static findAll(dbConnection, options) {
     return new Promise((resolve, reject) => {
-      dbConnection.all(FIND_ALL_STUDENT_SQL,
+      let findAllQuery = FIND_ALL_STUDENT_SQL;
+      if (options) {
+        findAllQuery = `${FIND_ALL_STUDENT_SQL} LIMIT ${options.limit}, ${options.offset}`;
+      }
+      dbConnection.all(findAllQuery,
       (err, rows) => {
         if (!err) {
           resolve(rows);
@@ -104,6 +108,30 @@ class Student {
         } else {
           reject(err);
         }
+      });
+    });
+  }
+
+  static findOrCreate(dbConnection, student) {
+    return new Promise((resolve, reject) => {
+      Student.findById(dbConnection, student.id)
+      .then((foundStudent) => {
+        Student.update(dbConnection, student)
+        .then((updateResult) => {
+          resolve(updateResult);
+        })
+        .catch((updateErr) => {
+          reject(updateErr);
+        });
+      }).catch((err) => {
+        console.log(err);
+        Student.create(dbConnection, student)
+        .then(() => {
+          resolve();
+        })
+        .catch((createErr) => {
+          reject(createErr);
+        });
       });
     });
   }
