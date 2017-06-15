@@ -51,7 +51,8 @@ class Student {
 
   static findAll(conn,  callback, condition = {limit: 10, offset: 0}) {
     conn.serialize(function() {
-      let query = `select * from students limit ${condition.limit} offset ${condition.offset}`;
+      let query = `select * from students limit 10 offset 0`;
+      console.log(query);
       conn.all(query, function(err, rows) {
         if (!err) callback(null, rows);
         else callback(err, null);
