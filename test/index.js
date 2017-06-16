@@ -9,9 +9,9 @@ var Student = require('./models/student.js');
 var argv = process.argv;
 
 function help() {
-  console.log('#############HELP MENU#############')
+  console.log('===========HELP MENU===========')
   console.log('SETUP')
-  console.log('Set database up (first time usage), use dbModel.setup() function\n')
+  console.log('To set the database up (first time usage), use dbModel.setup() function\n')
   console.log('There are 2 tables available, cohorts and students.')
   console.log('To use the available function, always use Student or Cohort as prefix')
   console.log('1. Use <create> to create new data, e.g. Student.create(dbModel.connection, {firstname: "John", lastname: "Doe", cohort_id: 2})')
